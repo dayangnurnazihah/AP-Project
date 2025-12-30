@@ -1,4 +1,3 @@
-package src;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -70,5 +69,6 @@ class User {
     System.out.print("Press enter to contnue...");
     String enter = scn.nextLine();
     System.out.println();
+    scn.close();
   }
 }

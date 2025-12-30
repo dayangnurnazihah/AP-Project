@@ -1,4 +1,3 @@
-package src;
 class Student extends User {
   private String name;
   private String matricNo;

@@ -1,4 +1,3 @@
-package src;
 class CourseAssg {
   private Course course;
   private String session;
