@@ -14,6 +14,7 @@ public class Main {
     ArrayList courses = loadCourses();
     
     assignCourse(users, courses);
+    //registerCourse(users);
 
     System.out.println();
 
@@ -21,9 +22,29 @@ public class Main {
     System.out.println("-------------------------------------");
 
     String[] startMenus =  {"Login", "Exit"};
-    String[] adminMenus =  {"List Courses", "Course Info", "List Students", "List Lecturer", "Assign Course", "Logout"};
-    String[] lectMenus =  {"List Assigned Courses", "List Students", "Update Marks", "Logout"};
-    String[] studMenus =  {"List Registered Courses", "View Grades & CGPA", "Logout"};
+    String[] adminMenus = {
+      "List Courses", 
+      "Course Info", 
+      "List Students", 
+      "List Lecturer", 
+      "Assign Course", 
+      "Logout"
+    };
+
+    String[] lectMenus = {
+      "List Assigned Courses", 
+      "List Students", 
+      "Update Marks", 
+      "Logout"
+    };
+
+    String[] studMenus = {
+      "Register Course",
+      "List Registered Courses", 
+      "View Grades & CGPA", 
+      "Logout"
+    };
+
 
     boolean exit = false;
     while (!exit) {
@@ -98,7 +119,7 @@ public class Main {
     System.out.println();
 
     System.out.println("Load users (Lecturer)...");
-    ArrayList<String> lectList = readCSVFile("/CSV/Lecturers.csv");
+    ArrayList<String> lectList = readCSVFile("../CSV/Lecturers.csv");
 
     for (int i = 0; i < lectList.size(); i++) {
       String line = lectList.get(i);

@@ -6,7 +6,7 @@ class User {
   private String password;
   private String role;
 
-  public User() { };
+  public User() { }
 
   public User(String username, String password, String role) {
     this.username = username;
@@ -19,15 +19,15 @@ class User {
   }
 
   public boolean isAdmin() {
-    return this.role == "ADMIN";
+    return this.role.equals("ADMIN");
   }
 
   public boolean isLecturer() {
-    return this.role == "LECTURER";
+    return this.role.equals("LECTURER");
   }
 
   public boolean isStudent() {
-    return this.role == "STUDENT";
+    return this.role.equals("STUDENT");
   }
 
   public String toString() {
@@ -39,7 +39,6 @@ class User {
   }
 
   public boolean auth(String username, String password) {
-    //System.out.println(username.equals(this.username) && password.equals(this.password));
     return (username.equals(this.username) && password.equals(this.password));
   }
 
@@ -66,9 +65,8 @@ class User {
   
   public static void pressEnterContinue() {
     Scanner scn = new Scanner(System.in);
-    System.out.print("Press enter to contnue...");
+    System.out.print("Press enter to continue...");
     String enter = scn.nextLine();
     System.out.println();
-    scn.close();
   }
 }
