@@ -13,4 +13,8 @@ class CourseAssg {
     return course;
   }
 
+  public String toString () {
+    return this.session + "-SEM"+ this.semester;
+  }
+
 }
