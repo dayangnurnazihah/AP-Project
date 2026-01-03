@@ -88,6 +88,9 @@ public void registerStudent(StudentReg studReg) {
 - Student module: partially functional
 
 ### To Be Done
-- Implement student course registration
-- Implement lecturer update marks
-- Re-test student features after registration is available
+- Implement student course registration - done
+- Implement lecturer update marks - done
+- Re-test student features after registration is available 
+
+# new
+- determine whether view student marks is needed in lecturer menu
