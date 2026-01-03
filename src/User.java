@@ -2,10 +2,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 class User {
-
-  // 🔹 FIX 1: shared scanner for whole system
-  protected static Scanner keyin = new Scanner(System.in);
-
   private String username;
   private String password;
   private String role;
@@ -43,19 +39,19 @@ class User {
   }
 
   public boolean auth(String username, String password) {
-    return username.equals(this.username) && password.equals(this.password);
+    return (username.equals(this.username) && password.equals(this.password));
   }
 
-  // ================= LOGIN =================
   public static User login(ArrayList<User> users) {
-
+    Scanner scn = new Scanner(System.in);
     System.out.print("Username: ");
-    String username = keyin.nextLine();
+    String username = scn.nextLine();
 
     System.out.print("Password: ");
-    String password = keyin.nextLine();
+    String password = scn.nextLine();
 
-    for (User user : users) {
+    for (int i = 0; i < users.size(); i++) {
+      User user = (User)users.get(i);
       if (user.auth(username, password)) {
         System.out.println("Authenticate: " + user.getAcctInfo());
         System.out.println();
@@ -66,11 +62,11 @@ class User {
     System.out.println("Invalid username and password!\n");
     return null;
   }
-
-  // ================= PRESS ENTER =================
+  
   public static void pressEnterContinue() {
+    Scanner scn = new Scanner(System.in);
     System.out.print("Press enter to continue...");
-    keyin.nextLine();
+    String enter = scn.nextLine();
     System.out.println();
   }
 }
