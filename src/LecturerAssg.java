@@ -13,4 +13,7 @@ class LecturerAssg {
     return lecturer;
   }
 
+  public String toString () {
+    return this.session + semester;
+  }
 }
