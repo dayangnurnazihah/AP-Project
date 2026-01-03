@@ -1,27 +1,28 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
-import java.util.stream.Collectors;
 import java.io.File;
 import java.io.FileNotFoundException;
 
 public class Main {
+
+  // 🔹 FIX 1: shared lists (used by Student.java)
+  public static ArrayList<User> userList = new ArrayList<>();
+  public static ArrayList<Course> courseList = new ArrayList<>();
+
   public static void main(String[] args) {
     User currentUser = null;
-    ArrayList users = loadUsers();
-    ArrayList courses = loadCourses();
-    
-    assignCourse(users, courses);
-    //registerCourse(users);
+
+    userList = loadUsers();
+    courseList = loadCourses();
+
+    assignCourse(userList, courseList);
 
     System.out.println();
-
     System.out.println("Course Mark & Grade Management System");
     System.out.println("-------------------------------------");
 
-    String[] startMenus =  {"Login", "Exit"};
+    String[] startMenus = {"Login", "Exit"};
     String[] adminMenus = {
       "List Courses", 
       "Course Info", 
@@ -45,42 +46,41 @@ public class Main {
       "Logout"
     };
 
-
     boolean exit = false;
     while (!exit) {
+
       if (currentUser == null) {
-        if (chooseMenu(startMenus) == "Login") {
-          currentUser = User.login(users);
+        if (chooseMenu(startMenus).equals("Login")) {
+          currentUser = User.login(userList);
         } else {
           exit = true;
         }
-      } else {
-        if (currentUser.isAdmin()) {
-          String menu = chooseMenu(adminMenus);
 
-          if (menu == "Logout") {
-            currentUser = null;
-          } else {
-            ((Admin)currentUser).runTask(menu, users, courses);
-          }
+      } else if (currentUser.isAdmin()) {
+        String menu = chooseMenu(adminMenus);
 
-        } else if (currentUser.isLecturer()) {
-          String menu = chooseMenu(lectMenus);
+        if (menu.equals("Logout")) {
+          currentUser = null;
+        } else {
+          ((Admin)currentUser).runTask(menu, userList, courseList);
+        }
 
-          if (menu == "Logout") {
-            currentUser = null;
-          } else {
-            ((Lecturer)currentUser).runTask(menu);
-          }
+      } else if (currentUser.isLecturer()) {
+        String menu = chooseMenu(lectMenus);
 
-        } else if (currentUser.isStudent()) {
-          String menu = chooseMenu(studMenus);
+        if (menu.equals("Logout")) {
+          currentUser = null;
+        } else {
+          ((Lecturer)currentUser).runTask(menu);
+        }
 
-          if (menu == "Logout") {
-            currentUser = null;
-          } else {
-            ((Student)currentUser).runTask(menu);
-          }
+      } else if (currentUser.isStudent()) {
+        String menu = chooseMenu(studMenus);
+
+        if (menu.equals("Logout")) {
+          currentUser = null;
+        } else {
+          ((Student)currentUser).runTask(menu);
         }
       }
     }
@@ -90,149 +90,90 @@ public class Main {
 
   public static String chooseMenu(String[] menus) {
     for (int i = 0; i < menus.length; i++) {
-      System.out.println((i+1) + ". " + menus[i]);
+      System.out.println((i + 1) + ". " + menus[i]);
     }
 
     int choice = 0;
-
     while (choice < 1 || choice > menus.length) {
-      Scanner scn = new Scanner(System.in);
       System.out.printf("Enter your choice (1-%d): ", menus.length);
-      choice = scn.nextInt();
+      choice = User.keyin.nextInt();
+      User.keyin.nextLine();
     }
 
     System.out.println();
-
     return menus[choice - 1];
   }
 
   /////////////////////////////////////////////////////////////////////////////
-  
-  // create user instances (admin, lecturers, and students) 
-  public static ArrayList loadUsers() {
-    ArrayList list = new ArrayList();
 
-    System.out.println("Load user (Admin)...");
-    // new Admin(username, password, role)
+  public static ArrayList<User> loadUsers() {
+    ArrayList<User> list = new ArrayList<>();
+
     list.add(new Admin("admin", "abc123", "ADMIN"));
-    
-    System.out.println();
 
-    System.out.println("Load users (Lecturer)...");
     ArrayList<String> lectList = readCSVFile("../CSV/Lecturers.csv");
-
-    for (int i = 0; i < lectList.size(); i++) {
-      String line = lectList.get(i);
-      String[] data = line.split(","); // Assuming comma as delimiter
-
-      // new Lecturer(name, workID, username, password);
-      Lecturer lect = new Lecturer(data[0], data[1], data[2], data[3]);
-      list.add(lect);
-      System.out.println(lect);
+    for (String line : lectList) {
+      String[] data = line.split(",");
+      list.add(new Lecturer(data[0], data[1], data[2], data[3]));
     }
 
-    System.out.println();
-
-    System.out.println("Load users (Students)...");
     ArrayList<String> studList = readCSVFile("../CSV/Students.csv");
-
-    for (int i = 0; i < studList.size(); i++) {
-      String line = studList.get(i);
-      String[] data = line.split(","); // Assuming comma as delimiter
-
-      // new Student(name, matricNo, username, password)
-      Student stud = new Student(data[0], data[1], data[2], data[3]);
-      list.add(stud);
-      System.out.println(stud);
+    for (String line : studList) {
+      String[] data = line.split(",");
+      list.add(new Student(data[0], data[1], data[2], data[3]));
     }
-    
-    System.out.println();
 
     return list;
   }
-  
-   // create course instances
-  public static ArrayList loadCourses() {
-    ArrayList list = new ArrayList();
-    
-    System.out.println("Load courses...");
-    ArrayList<String> courseList = readCSVFile("../CSV/Courses.csv");
-    
-    for (int i = 0; i < courseList.size(); i++) {
-      String line = courseList.get(i);
-      String[] data = line.split(","); // Assuming comma as delimiter
 
-      // new Course(name, code, credits);
-      Course crs = new Course(data[0], data[1], Integer.parseInt(data[2]));
-      list.add(crs);
-      System.out.println(crs);
+  public static ArrayList<Course> loadCourses() {
+    ArrayList<Course> list = new ArrayList<>();
+
+    ArrayList<String> courseCSV = readCSVFile("../CSV/Courses.csv");
+    for (String line : courseCSV) {
+      String[] data = line.split(",");
+      list.add(new Course(data[0], data[1], Integer.parseInt(data[2])));
     }
 
-    System.out.println();
-    
     return list;
   }
-  
-  // assign courses to lecturersCourseAssg.csv
-  public static void assignCourse(ArrayList users, ArrayList courses) {
-    System.out.println("Assign courses to lecturers...");
+
+  public static void assignCourse(ArrayList<User> users, ArrayList<Course> courses) {
     ArrayList<String> crsAssgList = readCSVFile("../CSV/CourseAssg.csv");
-    
-    for (int i = 0; i < crsAssgList.size(); i++) {
-      String line = crsAssgList.get(i);
-      String[] data = line.split(","); // Assuming comma as delimiter
-      
+
+    for (String line : crsAssgList) {
+      String[] data = line.split(",");
       String courseCode = data[0];
       String workID = data[1];
-      
-      // find the course
-      Course crs = (Course)courses.stream().filter(c -> ((Course)c).getCode().equals(courseCode)).findFirst().get();
-      
-      // find the lecturer
-      Stream<Lecturer> lectStream = users.stream().filter(u -> ((User)u).isLecturer());
-      Lecturer lect = lectStream.filter(u -> u.getWorkID().equals(workID)).findFirst().get();
-      
-      // assign lecturer's course and course's lecturer
-      System.out.println(crs + " -> " + lect);
+
+      Course crs = courses.stream()
+        .filter(c -> c.getCode().equals(courseCode))
+        .findFirst().get();
+
+      Lecturer lect = users.stream()
+        .filter(u -> u.isLecturer())
+        .map(u -> (Lecturer)u)
+        .filter(l -> l.getWorkID().equals(workID))
+        .findFirst().get();
+
       lect.assignCourse(new CourseAssg(crs, "2005/2006", 1));
       crs.assignLecturer(new LecturerAssg(lect, "2005/2006", 1));
-      
-      // find the lecturer and assign with the corresponding course
-      /*lectStream.forEach(u -> {
-        if (u.getWorkID().equals(workID)) {
-          
-          
-        }
-      });*/
-      
     }
-  }
-  
-  // register students' courses
-  public static void registerCourse(ArrayList users) {
-    
   }
 
   /////////////////////////////////////////////////////////////////////////////
 
-  // return array of String separate
-  public static ArrayList readCSVFile(String csvFile) {
-    ArrayList<String> strList = new ArrayList<>();
+  public static ArrayList<String> readCSVFile(String csvFile) {
+    ArrayList<String> list = new ArrayList<>();
 
-    System.out.printf("Read and list CSV file content (%s):\n", csvFile);
-    
     try (Scanner scanner = new Scanner(new File(csvFile))) {
-        while (scanner.hasNextLine()) {
-          // Read file content and remove Byte Order Mark (BOM) if present
-          // The BOM included by Excel when save the file as CSV
-          String line = scanner.nextLine().replace("\uFEFF", "");
-          strList.add(line);
-          System.out.println(line);
-        }
+      while (scanner.hasNextLine()) {
+        list.add(scanner.nextLine().replace("\uFEFF", ""));
+      }
     } catch (FileNotFoundException e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
 
-    return strList;
+    return list;
   }
 }

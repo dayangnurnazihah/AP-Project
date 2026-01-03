@@ -32,18 +32,58 @@ class Student extends User {
     this.crsRegList.add(crsReg);
   }
 
-
-
-
   public void runTask(String menu) {
     System.out.println("Run " + this.getRole() + " task for '" + menu + "' operation\n");
-    
-    if (menu.equals("Register Course")) {
-      System.out.println("Register Course Coming Soon!!.");
-      System.out.println("This will allow you to register student to a course.");
-      //???
 
-    } else if (menu.equals("List Registered Courses")) {
+    // ================= REGISTER COURSE =================
+    if (menu.equals("Register Course")) {
+
+      System.out.println("REGISTER COURSE");
+      System.out.println("----------------");
+
+      if (Main.courseList.isEmpty()) {
+        System.out.println("No courses available.");
+        User.pressEnterContinue();
+        return;
+      }
+
+      int num = 1;
+      for (Course c : Main.courseList) {
+        System.out.printf("%d. %s (%d credits)\n",
+            num, c.toString(), c.getCredits());
+        num++;
+      }
+
+      System.out.print("Select course number: ");
+      int choice = User.keyin.nextInt();
+      User.keyin.nextLine();
+
+      if (choice < 1 || choice > Main.courseList.size()) {
+        System.out.println("Invalid choice.");
+        User.pressEnterContinue();
+        return;
+      }
+
+      Course selectedCourse = Main.courseList.get(choice - 1);
+
+      System.out.print("Enter session (e.g. 2024/2025): ");
+      String session = User.keyin.nextLine();
+
+      System.out.print("Enter semester: ");
+      int semester = User.keyin.nextInt();
+      User.keyin.nextLine();
+
+      CourseReg cr = new CourseReg(selectedCourse, session, semester, null);
+      this.registerCourse(cr);
+
+      StudentReg sr = new StudentReg(this, session, semester);
+      selectedCourse.registerStudent(sr);
+
+      System.out.println("Course registered successfully!");
+    }
+
+    // ================= LIST REGISTERED COURSES =================
+    else if (menu.equals("List Registered Courses")) {
       if (crsRegList.isEmpty()) {
         System.out.println("No courses registered yet.");
       } else {
@@ -58,7 +98,10 @@ class Student extends User {
           num++;
         }
       }
-    } else if (menu.equals("View Grades & CGPA")) {
+    }
+
+    // ================= VIEW GRADES & CGPA =================
+    else if (menu.equals("View Grades & CGPA")) {
       if (crsRegList.isEmpty()) {
         System.out.println("No courses registered yet.");
       } else {
@@ -100,7 +143,7 @@ class Student extends User {
         }
       }
     }
-    
+
     User.pressEnterContinue();
   }
 }
