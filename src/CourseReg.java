@@ -10,7 +10,7 @@ class CourseReg {
     this.semester = semester;
     this.mark = mark;
   }
-  
+
   public Course getCourse() {
     return course;
   }
