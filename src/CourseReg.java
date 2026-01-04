@@ -28,6 +28,6 @@ class CourseReg {
   }
 
   public String toString() {
-    return this.session + semester;
+    return this.session;
   }
 }

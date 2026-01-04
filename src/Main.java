@@ -15,9 +15,6 @@ public class Main {
 
     System.out.println();
 
-    System.out.println("Course Mark & Grade Management System");
-    System.out.println("-------------------------------------");
-
     String[] startMenus = { "Login", "Exit" };
     String[] adminMenus = {
         "List Courses",
@@ -45,6 +42,8 @@ public class Main {
     boolean exit = false;
     while (!exit) {
       if (currentUser == null) {
+        System.out.println("Course Mark & Grade Management System");
+        System.out.println("-------------------------------------");
         if (chooseMenu(startMenus) == "Login") {
           currentUser = User.login(users);
         } else {

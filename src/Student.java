@@ -99,7 +99,7 @@ class Student extends User {
         System.out.println("Your Registered Courses:");
         int num = 1;
         for (CourseReg crsReg : crsRegList) {
-          System.out.printf("%d. %s (%s - Sem %d)\n",
+          System.out.printf("%d. %s (%s - SEM %d)\n",
               num,
               crsReg.getCourse(),
               crsReg.toString(),
@@ -150,6 +150,7 @@ class Student extends User {
       }
     }
 
+    System.out.println();
     User.pressEnterContinue();
   }
 }

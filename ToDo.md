@@ -25,9 +25,10 @@
 - List Assigned Courses ✅
 - List Students (by assigned course) ✅
 - Logout ✅
+- Update Marks ✅
 
 ### Not Implemented
-- Update Marks ⏳
+- N/A
 
 ### Notes
 - Lecturer can only view students from their assigned courses.
@@ -42,42 +43,20 @@
 - List Registered Courses ✅ (empty if not registered)
 - View Grades & CGPA ✅ (empty if not registered)
 - Logout ✅
+- Register Course ✅
 
 ### Not Implemented
-- Register Course ⏳
+- N/A
 
 ### Notes
-- Student **must register courses first** before:
-  - viewing registered courses
-  - viewing grades & CGPA
-- Since course registration is not implemented yet:
-  - Student-related features cannot be fully tested
-  - Further testing and fixes will be done after registration is completed
+- Student can now:
+  - View registered courses
+  - View grades & CGPA
+- Course Registration has been implemented:
+  - Student-related features can be fully tested
+  - The system will register student course automatically using .csv file provided
+  - Student can manually register their own courses.
 
----
-
-## Function
-Please re-check this 2 function. Do whatever needed with this 2.
-
-### Main.java (Line 212)
-
-```
-
-public static void registerCourse(ArrayList users) {
-
-}
-
-```
-
-### Course.java (Line 29)
-
-```
-
-public void registerStudent(StudentReg studReg) {
- this.studRegList.add(studReg);
-}
-
-```
 ---
 
 ## Summary
@@ -85,12 +64,15 @@ public void registerStudent(StudentReg studReg) {
 ### Working
 - Admin module: fully functional
 - Lecturer module: mostly functional
-- Student module: partially functional
+- Student module: mostly functional
 
 ### To Be Done
+- N/A
+
+### Done & Checked
 - Implement student course registration - done
 - Implement lecturer update marks - done
-- Re-test student features after registration is available 
+- Re-test student features after registration is available - done
 
-# new
-- determine whether view student marks is needed in lecturer menu
+### suggestion
+- determine whether view student marks is needed in lecturer menu - //can be considered for future function(idlan)

@@ -87,7 +87,7 @@ class Lecturer extends User {
       }
 
     } else if (menu.equals("Update Marks")) {
-      System.out.println("Update Marks for student");
+      System.out.println("Update Marks for student\n");
       updateMarks();
     }
 
@@ -111,6 +111,7 @@ class Lecturer extends User {
       System.out.printf("%d. %s\n", i + 1, ca.getCourse());
     }
 
+    System.out.println();
     System.out.print("Select course: ");
     int cChoice = scn.nextInt();
 
