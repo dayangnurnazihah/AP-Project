@@ -10,7 +10,7 @@ class CourseReg {
     this.semester = semester;
     this.mark = mark;
   }
-  
+
   public Course getCourse() {
     return course;
   }
@@ -28,6 +28,6 @@ class CourseReg {
   }
 
   public String toString() {
-    return this.session + semester;
+    return this.session;
   }
 }

@@ -14,22 +14,31 @@ class Course {
     this.lectAssgList = new ArrayList<LecturerAssg>();
     this.studRegList = new ArrayList<StudentReg>();
   }
-  
-  public String getCode() { return this.code; }
-  public int getCredits() { return this.credits; }
+
+  public String getCode() {
+    return this.code;
+  }
+
+  public int getCredits() {
+    return this.credits;
+  }
 
   public String toString() {
     return this.code + "-" + this.name;
   }
-  
+
   public void assignLecturer(LecturerAssg lectAssg) {
     this.lectAssgList.add(lectAssg);
   }
-  
+
   public void registerStudent(StudentReg studReg) {
     this.studRegList.add(studReg);
   }
-  
+
+  public ArrayList<StudentReg> getStudentRegList() {
+    return studRegList;
+  }
+
   public void listLecturer() {
     if (lectAssgList.isEmpty()) {
       System.out.println("No lecturers assigned yet.");
@@ -41,7 +50,7 @@ class Course {
       }
     }
   }
-  
+
   public void listStudent() {
     if (studRegList.isEmpty()) {
       System.out.println("No students registered yet.");
