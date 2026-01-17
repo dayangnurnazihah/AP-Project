@@ -42,8 +42,9 @@ public class Main {
     boolean exit = false;
     while (!exit) {
       if (currentUser == null) {
-        System.out.println("Course Mark & Grade Management System");
-        System.out.println("-------------------------------------");
+        System.out.println("=================================================");
+        System.out.println("           COURSE MARK & GRADE SYSTEM");
+        System.out.println("=================================================");
         if (chooseMenu(startMenus) == "Login") {
           currentUser = User.login(users);
         } else {
@@ -81,7 +82,7 @@ public class Main {
     }
   }
 
-  /////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
 
   public static String chooseMenu(String[] menus) {
     for (int i = 0; i < menus.length; i++) {
@@ -101,7 +102,7 @@ public class Main {
     return menus[choice - 1];
   }
 
-  /////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
 
   // create user instances (admin, lecturers, and students)
   public static ArrayList loadUsers() {
@@ -271,7 +272,7 @@ public class Main {
     }
   }
 
-  /////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
 
   // return array of String separate
   public static ArrayList readCSVFile(String csvFile) {

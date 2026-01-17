@@ -13,6 +13,10 @@ class Student extends User {
     this.crsRegList = new ArrayList<CourseReg>();
   }
 
+  public String getName() {
+    return name;
+  }
+
   public String getMatricNo() {
     return matricNo;
   }
@@ -45,7 +49,7 @@ class Student extends User {
       Scanner scn = new Scanner(System.in);
 
       System.out.println("Register Course");
-      System.out.println("----------------");
+      System.out.println("===============");
 
       if (courses.isEmpty()) {
         System.out.println("No courses available.");
@@ -53,13 +57,17 @@ class Student extends User {
       }
 
       // list courses
+      System.out.println("===============================================");
+      System.out.printf("| %-4s | %-25s | %-7s |%n", "NO.", "COURSE", "CREDITS");
+      System.out.println("===============================================");
       for (int i = 0; i < courses.size(); i++) {
         Course c = courses.get(i);
-        System.out.printf("%d. %s (%d credits)\n",
+        System.out.printf("| %3d. | %-25.25s | %7d |%n",
             i + 1, c.toString(), c.getCredits());
       }
+      System.out.println("===============================================");
 
-      System.out.print("Select course number: ");
+      System.out.print("Select course number (NO.): ");
       int choice = scn.nextInt();
 
       if (choice < 1 || choice > courses.size()) {
@@ -97,25 +105,29 @@ class Student extends User {
         System.out.println("No courses registered yet.");
       } else {
         System.out.println("Your Registered Courses:");
+        System.out.println("==============================================================");
+        System.out.printf("| %-4s | %-25s | %-12s | %-7s |%n", "NO.", "COURSE", "SESSION", "SEM");
+        System.out.println("==============================================================");
         int num = 1;
         for (CourseReg crsReg : crsRegList) {
-          System.out.printf("%d. %s (%s - SEM %d)\n",
+          System.out.printf("| %3d. | %-25.25s | %-12.12s | %7d |%n",
               num,
               crsReg.getCourse(),
               crsReg.toString(),
               crsReg.getSemester());
           num++;
         }
+        System.out.println("==============================================================");
       }
     } else if (menu.equals("View Grades & CGPA")) {
       if (crsRegList.isEmpty()) {
         System.out.println("No courses registered yet.");
       } else {
         System.out.println("Your Grades:");
-        System.out.println("---------------------------------------------------------------");
-        System.out.printf("%-20s %-10s %-10s %-10s %-5s\n",
-            "Course", "CW", "Exam", "Total", "Grade");
-        System.out.println("---------------------------------------------------------------");
+        System.out.println("==============================================================");
+        System.out.printf("| %-20s | %-6s | %-6s | %-6s | %-5s |%n",
+            "COURSE", "CW", "EXAM", "TOTAL", "GRADE");
+        System.out.println("==============================================================");
 
         double totalPoints = 0;
         int totalCredits = 0;
@@ -125,7 +137,7 @@ class Student extends User {
           Course course = crsReg.getCourse();
 
           if (mark != null) {
-            System.out.printf("%-20s %-10d %-10d %-10d %-5s\n",
+            System.out.printf("| %-20.20s | %6d | %6d | %6d | %-5s |%n",
                 course.getCode(),
                 mark.getCourseWork(),
                 mark.getFinalExam(),
@@ -135,12 +147,12 @@ class Student extends User {
             totalPoints += mark.point() * course.getCredits();
             totalCredits += course.getCredits();
           } else {
-            System.out.printf("%-20s %-10s %-10s %-10s %-5s\n",
+            System.out.printf("| %-20.20s | %6s | %6s | %6s | %-5s |%n",
                 course.getCode(), "-", "-", "-", "N/A");
           }
         }
 
-        System.out.println("---------------------------------------------------------------");
+        System.out.println("==============================================================");
         if (totalCredits > 0) {
           double cgpa = totalPoints / totalCredits;
           System.out.printf("CGPA: %.2f\n", cgpa);

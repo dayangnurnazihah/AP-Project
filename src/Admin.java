@@ -8,7 +8,7 @@ class Admin extends User {
   }
 
   public String getAcctInfo() {
-    return "Admin (System Administrator)";
+    return "Admin (System Administrator)" + "\nWelcome, Admin!";
   }
 
   public void runTask(String menu, ArrayList users, ArrayList courses) {
@@ -16,13 +16,16 @@ class Admin extends User {
 
     if (menu.equals("List Courses")) {
       System.out.println("All Courses:");
-      System.out.println("---------------------------------------------------------------");
+      System.out.println("===============================================");
+      System.out.printf("| %-4s | %-25s | %-7s |%n", "NO.", "COURSE", "CREDITS");
+      System.out.println("===============================================");
       int num = 1;
       for (Object crs : courses) {
         Course course = (Course) crs;
-        System.out.printf("%d. %s (%d credits)\n", num, course, course.getCredits());
+        System.out.printf("| %3d. | %-25.25s | %7d |%n", num, course, course.getCredits());
         num++;
       }
+      System.out.println("===============================================");
       System.out.println();
 
     } else if (menu.equals("Course Info")) {
@@ -49,40 +52,85 @@ class Admin extends User {
 
     } else if (menu.equals("List Students")) {
       System.out.println("All Students:");
-      System.out.println("---------------------------------------------------------------");
+      System.out.println("=================================================");
+      System.out.printf("| %-4s | %-25s | %-10s |%n", "NO.", "NAME", "MATRIC");
+      System.out.println("=================================================");
       Stream<Student> studStream = users.stream().filter(u -> ((User) u).isStudent()).map(u -> (Student) u);
 
       int[] num = { 1 };
       studStream.forEach(stud -> {
-        System.out.println(num[0] + ". " + stud.getInfo());
+        System.out.printf("| %3d. | %-25.25s | %-10.10s |%n",
+            num[0],
+            stud.getName(),
+            stud.getMatricNo());
         num[0]++;
       });
 
       if (num[0] == 1) {
         System.out.println("No students found.");
       }
+      System.out.println("=================================================");
 
     } else if (menu.equals("List Lecturer")) {
       System.out.println("All Lecturers:");
-      System.out.println("---------------------------------------------------------------");
+      System.out.println("=================================================");
+      System.out.printf("| %-4s | %-25s | %-10s |%n", "NO.", "NAME", "WORK ID");
+      System.out.println("=================================================");
       Stream<Lecturer> lectStream = users.stream().filter(u -> ((User) u).isLecturer()).map(u -> (Lecturer) u);
 
       int[] num = { 1 };
       lectStream.forEach(lect -> {
-        System.out.println(num[0] + ". " + lect.getInfo());
+        System.out.printf("| %3d. | %-25.25s | %-10.10s |%n",
+            num[0],
+            lect.getName(),
+            lect.getWorkID());
         num[0]++;
       });
 
       if (num[0] == 1) {
         System.out.println("No lecturers found.");
       }
+      System.out.println("=================================================");
 
     } else if (menu.equals("Assign Course")) { // this assign course only applied to lecturer, may need to add function
                                                // for registering student too
       Scanner scn = new Scanner(System.in);
 
       System.out.println("Assign Course to Lecturer");
-      System.out.println("-------------------------");
+      System.out.println("=========================");
+      System.out.println();
+
+      System.out.println("Available Courses:");
+      System.out.println("===============================================");
+      System.out.printf("| %-4s | %-25s | %-7s |%n", "NO.", "COURSE", "CREDITS");
+      System.out.println("===============================================");
+      int courseNum = 1;
+      for (Object crs : courses) {
+        Course course = (Course) crs;
+        System.out.printf("| %3d. | %-25.25s | %7d |%n", courseNum, course, course.getCredits());
+        courseNum++;
+      }
+      System.out.println("===============================================");
+      System.out.println();
+
+      System.out.println("Available Lecturers:");
+      System.out.println("=================================================");
+      System.out.printf("| %-4s | %-25s | %-10s |%n", "NO.", "NAME", "WORK ID");
+      System.out.println("=================================================");
+      Stream<Lecturer> lectStream = users.stream().filter(u -> ((User) u).isLecturer()).map(u -> (Lecturer) u);
+      int[] lectNum = { 1 };
+      lectStream.forEach(lect -> {
+        System.out.printf("| %3d. | %-25.25s | %-10.10s |%n",
+            lectNum[0],
+            lect.getName(),
+            lect.getWorkID());
+        lectNum[0]++;
+      });
+      if (lectNum[0] == 1) {
+        System.out.println("No lecturers found.");
+      }
+      System.out.println("=================================================");
+      System.out.println();
 
       System.out.print("Course Code: ");
       String courseCode = scn.nextLine();
@@ -101,7 +149,7 @@ class Admin extends User {
         Course crs = (Course) courses.stream().filter(c -> ((Course) c).getCode().equals(courseCode)).findFirst().get();
 
         // find the lecturer
-        Stream<Lecturer> lectStream = users.stream().filter(u -> ((User) u).isLecturer()).map(u -> (Lecturer) u);
+        lectStream = users.stream().filter(u -> ((User) u).isLecturer()).map(u -> (Lecturer) u);
         Lecturer lect = lectStream
             .filter(u -> u.getWorkID().equals(workID))
             .findFirst()

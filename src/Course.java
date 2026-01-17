@@ -44,10 +44,19 @@ class Course {
       System.out.println("No lecturers assigned yet.");
     } else {
       int num = 1;
+      System.out.println("======== LECTURER LIST ========");
+      System.out.println();
+      System.out.println("=================================================");
+      System.out.printf("| %-4s | %-25s | %-10s |%n", "NO.", "NAME", "WORK ID");
+      System.out.println("=================================================");
       for (LecturerAssg lectAssg : lectAssgList) {
-        System.out.printf("%d. %s\n", num, lectAssg.getLecturer().getInfo());
+        System.out.printf("| %3d. | %-25.25s | %-10.10s |%n",
+            num,
+            lectAssg.getLecturer().getName(),
+            lectAssg.getLecturer().getWorkID());
         num++;
       }
+      System.out.println("=================================================");
     }
   }
 
@@ -56,10 +65,18 @@ class Course {
       System.out.println("No students registered yet.");
     } else {
       int num = 1;
+      System.out.println("========= STUDENT LIST ===========");
+      System.out.println();
+      System.out.println("=================================================");
+      System.out.printf("| %-4s | %-25s | %-10s |%n", "NO.", "NAME", "MATRIC");
+      System.out.println("=================================================");
       for (StudentReg studReg : studRegList) {
-        System.out.printf("%d. %s\n", num, studReg.getStudent().getInfo());
+        System.out.printf("| %3d. | %-25s | %-10s |%n", num, studReg.getStudent().getName(),
+            studReg.getStudent().getMatricNo());
         num++;
       }
+      System.out.println("=================================================");
+
     }
   }
 }

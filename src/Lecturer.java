@@ -13,6 +13,9 @@ class Lecturer extends User {
     this.crsAssgList = new ArrayList<CourseAssg>();
   }
 
+  public String getName() {
+    return name;
+  }
   public String getWorkID() {
     return workID;
   }
@@ -49,15 +52,19 @@ class Lecturer extends User {
         System.out.println("No courses assigned yet.");
       } else {
         System.out.println("Your Assigned Courses:");
+        System.out.println("==============================================================");
+        System.out.printf("| %-4s | %-25s | %-12s | %-7s |%n", "NO.", "COURSE", "SESSION", "CREDITS");
+        System.out.println("==============================================================");
         int num = 1;
         for (CourseAssg crsAssg : crsAssgList) {
-          System.out.printf("%d. %s (%s) - %d credits\n",
+          System.out.printf("| %3d. | %-25.25s | %-12.12s | %7d |%n",
               num,
               crsAssg.getCourse(),
               crsAssg.toString(),
               crsAssg.getCourse().getCredits());
           num++;
         }
+        System.out.println("==============================================================");
         System.out.println("\nTotal Credits: " + getActCredit());
       }
 
@@ -69,9 +76,14 @@ class Lecturer extends User {
 
         // Show courses first
         System.out.println("Your Assigned Courses:");
+        System.out.println("===============================================");
+        System.out.printf("| %-4s | %-25s | %-7s |%n", "NO.", "COURSE", "CREDITS");
+        System.out.println("===============================================");
         for (int i = 0; i < crsAssgList.size(); i++) {
-          System.out.printf("%d. %s\n", (i + 1), crsAssgList.get(i).getCourse());
+          Course course = crsAssgList.get(i).getCourse();
+          System.out.printf("| %3d. | %-25.25s | %7d |%n", (i + 1), course, course.getCredits());
         }
+        System.out.println("===============================================");
 
         System.out.printf("\nEnter course number to view students (1-%d): ", crsAssgList.size());
         int choice = scn.nextInt();
@@ -79,7 +91,6 @@ class Lecturer extends User {
         if (choice > 0 && choice <= crsAssgList.size()) {
           Course selectedCourse = crsAssgList.get(choice - 1).getCourse();
           System.out.println("\nStudents in " + selectedCourse + ":");
-          System.out.println("---------------------------------------------------------------");
           selectedCourse.listStudent();
         } else {
           System.out.println("Invalid choice!");
@@ -104,15 +115,19 @@ class Lecturer extends User {
     }
 
     System.out.println("Update Marks");
-    System.out.println("------------");
+    System.out.println("============");
 
+    System.out.println("===============================================");
+    System.out.printf("| %-4s | %-25s | %-7s |%n", "NO.", "COURSE", "CREDITS");
+    System.out.println("===============================================");
     for (int i = 0; i < crsAssgList.size(); i++) {
       CourseAssg ca = crsAssgList.get(i);
-      System.out.printf("%d. %s\n", i + 1, ca.getCourse());
+      System.out.printf("| %3d. | %-25.25s | %7d |%n", i + 1, ca.getCourse(), ca.getCourse().getCredits());
     }
+    System.out.println("===============================================");
 
     System.out.println();
-    System.out.print("Select course: ");
+    System.out.print("Select course (NO.): ");
     int cChoice = scn.nextInt();
 
     if (cChoice < 1 || cChoice > crsAssgList.size()) {
@@ -130,13 +145,19 @@ class Lecturer extends User {
     }
 
     System.out.println("\nStudents:");
+    System.out.println("=================================================");
+    System.out.printf("| %-4s | %-25s | %-10s |%n", "NO.", "NAME", "MATRIC");
+    System.out.println("=================================================");
     for (int i = 0; i < studRegs.size(); i++) {
-      System.out.printf("%d. %s\n",
+      Student studentEntry = studRegs.get(i).getStudent();
+      System.out.printf("| %3d. | %-25.25s | %-10.10s |%n",
           i + 1,
-          studRegs.get(i).getStudent().getInfo());
+          studentEntry.getName(),
+          studentEntry.getMatricNo());
     }
+    System.out.println("=================================================");
 
-    System.out.print("Select student: ");
+    System.out.print("Select student (NO.)");
     int sChoice = scn.nextInt();
 
     if (sChoice < 1 || sChoice > studRegs.size()) {
