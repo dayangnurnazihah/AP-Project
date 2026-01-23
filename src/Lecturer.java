@@ -91,7 +91,40 @@ class Lecturer extends User {
         if (choice > 0 && choice <= crsAssgList.size()) {
           Course selectedCourse = crsAssgList.get(choice - 1).getCourse();
           System.out.println("\nStudents in " + selectedCourse + ":");
-          selectedCourse.listStudent();
+          ArrayList<StudentReg> studRegs = selectedCourse.getStudentRegList();
+          if (studRegs.isEmpty()) {
+            System.out.println("No students registered yet.");
+          } else {
+            System.out.println("===============================================================================");
+            System.out.printf("| %-4s | %-25s | %-10s | %4s | %4s | %5s | %-5s |%n",
+                "NO.", "NAME", "MATRIC", "CW", "EXAM", "TOTAL", "GRADE");
+            System.out.println("===============================================================================");
+            for (int i = 0; i < studRegs.size(); i++) {
+              Student studentEntry = studRegs.get(i).getStudent();
+              CourseReg courseReg = findCourseReg(studentEntry, selectedCourse);
+              if (courseReg != null && courseReg.getMark() != null) {
+                Mark mark = courseReg.getMark();
+                System.out.printf("| %3d. | %-25.25s | %-10.10s | %4d | %4d | %5d | %-5s |%n",
+                    i + 1,
+                    studentEntry.getName(),
+                    studentEntry.getMatricNo(),
+                    mark.getCourseWork(),
+                    mark.getFinalExam(),
+                    mark.totalMark(),
+                    mark.grade());
+              } else {
+                System.out.printf("| %3d. | %-25.25s | %-10.10s | %4s | %4s | %5s | %-5s |%n",
+                    i + 1,
+                    studentEntry.getName(),
+                    studentEntry.getMatricNo(),
+                    "-",
+                    "-",
+                    "-",
+                    "N/A");
+              }
+            }
+            System.out.println("===============================================================================");
+          }
         } else {
           System.out.println("Invalid choice!");
         }
@@ -190,6 +223,15 @@ class Lecturer extends User {
     courseReg.setMark(new Mark(cw, exam));
 
     System.out.println("Marks updated successfully.");
+  }
+
+  private CourseReg findCourseReg(Student student, Course course) {
+    for (CourseReg cr : student.getCourseRegList()) {
+      if (cr.getCourse().equals(course)) {
+        return cr;
+      }
+    }
+    return null;
   }
 
 }
